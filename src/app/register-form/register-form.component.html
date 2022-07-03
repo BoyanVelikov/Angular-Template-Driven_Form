@@ -1,0 +1,110 @@
+<div class="container">
+
+  <form (ngSubmit)="onSubmit()" #f="ngForm">
+
+    <fieldset>
+      <h1>Registration Form</h1>
+
+      <p class="field field-icon">
+        <label for="username"><span><i class="fas fa-user"></i></span></label>
+        <input type="text" name="username" id="username" placeholder="Mark Ulrich" ngModel required
+          pattern="[A-Z]{1}[a-z]+[ ][A-Z]{1}[a-z]+" #username="ngModel">
+      </p>
+
+      <!-- if error -->
+      <p class="error" *ngIf="!username.valid && username.touched">
+        Please enter a valid full name
+      </p>
+      <!-- end if error -->
+
+      <p class="field field-icon">
+        <label for="email"><span><i class="fas fa-envelope"></i></span></label>
+        <input type="text" name="email" id="email" placeholder="marк@gmial.com" ngModel required email #email="ngModel">
+      </p>
+
+      <p class="error" *ngIf="!email.valid && email.touched">
+        Please enter a valid email
+      </p>
+
+      <p class="field field-icon">
+        <label for="tel"><span><i class="fas fa-phone"></i></span></label>
+        <select name="prefix" id="prefix" class="tel" [ngModel]="defaultPrefix">
+          <option *ngFor="let prefix of prefixes" [value]="prefix">{{prefix}}</option>
+        </select>
+        <input type="text" name="tel" id="tel" placeholder="888 888" ngModel required pattern="[0-9]{9}" #tel="ngModel">
+      </p>
+
+      <p class="error" *ngIf="!tel.valid && tel.touched">
+        Please enter a valid phone number
+      </p>
+
+      <p class="field field-icon">
+        <label for="building"><span><i class="fas fa-building"></i></span></label>
+        <select name="building" id="building" class="building" [ngModel]="defaultBuilding">
+          <option *ngFor="let building of buildings" [value]="building">{{building}}</option>
+        </select>
+      </p>
+
+      <p class="field field-icon">
+        <label for="image"><span><i class="fas fa-image"></i></span></label>
+        <input type="text" name="image" id="image" placeholder="https://..." ngModel required pattern="[http].*(?:jpg|png)$" #image="ngModel">
+      </p>
+
+      <p class="error" *ngIf="image.touched && image.errors?.['pattern']">
+          Image URL must start with http and end with jpg/png!
+      </p>
+
+      <div ngModelGroup="passwords" #passData="ngModelGroup">
+        <p class="field field-icon">
+          <label for="password"><span><i class="fas fa-lock"></i></span></label>
+          <input type="password" name="password" id="password" placeholder="******" ngModel required
+            pattern="[A-Za-z0-9]{3,16}" #password="ngModel" [(ngModel)]="passwordOne">
+        </p>
+
+        <p class="error" *ngIf="password.touched && password.errors?.['required']">
+          Password is requred
+        </p>
+
+        <p class="error" *ngIf="password.touched && password.errors?.['pattern']">
+          Please enter a valid password
+        </p>
+
+        <div>
+          Password: {{passwordOne}}
+        </div>
+
+        <p class="field field-icon">
+          <label for="re-password"><span><i class="fas fa-lock"></i></span></label>
+          <input type="password" name="re-password" id="re-password" placeholder="******" ngModel required
+            pattern="[A-Za-z0-9]{3,16}" #rePassword="ngModel" [(ngModel)]="passwordTwo">
+        </p>
+
+        <p class="error" *ngIf="rePassword.touched && rePassword.errors?.['required']">
+          Repeat-password is required
+        </p>
+
+        <p class="error" *ngIf="rePassword.touched && rePassword.errors?.['pattern']">
+          Please enter a valid repeat-password
+        </p>
+
+        <div>
+          Repeat-password: {{passwordTwo}}
+        </div>
+
+        <p class="error" *ngIf="passwordOne !== passwordTwo && (password.dirty && rePassword.dirty)">
+          Passwords must match
+        </p>
+      </div>
+
+      <p>
+        <button [disabled]="!f.form.valid || !passData.valid || passwordOne !== passwordTwo">Create Account</button>
+      </p>
+
+      <p class="text-center">
+        Have an account?
+        <a href="">Log In</a>
+      </p>
+
+    </fieldset>
+  </form>
+</div>
